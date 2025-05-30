@@ -25,7 +25,7 @@ A lightweight, dependency-free way to run [Claude Code CLI](https://www.anthropi
 ## 🔧 Installation
 
 ```bash
-git clone [https://github.com/kristijansoldo/claude-code-docker.git](https://github.com/kristijansoldo/claude-code-docker.git)
+git clone https://github.com/kristijansoldo/claude-code-docker.git
 cd claude-code-docker
 chmod +x install.sh run-claude.sh
 ./install.sh
