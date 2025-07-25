@@ -10,6 +10,7 @@ set CONTAINER_COMMAND=^
 mkdir -p /app ^&^& ^
 chown claude:claude /app ^&^& ^
 mkdir -p /app/.claude ^&^& ^
+mkdir -p /app/.serena ^&^& ^
 chmod 755 /app/.claude ^&^& ^
 ln -sf /app/.claude ~/.claude ^&^& ^
 ln -sf /app/.serena ~/.serena ^&^& ^
