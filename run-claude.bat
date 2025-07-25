@@ -7,8 +7,6 @@ set "CurrentDir=%cd%"
 
 REM -- Container commands to sync and persist Claude CLI configuration
 set CONTAINER_COMMAND=^
-mkdir -p /app ^&^& ^
-chown claude:claude /app ^&^& ^
 mkdir -p /app/.claude ^&^& ^
 mkdir -p /app/.serena ^&^& ^
 chmod 755 /app/.claude ^&^& ^
