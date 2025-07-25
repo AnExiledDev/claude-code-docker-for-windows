@@ -16,3 +16,6 @@ Use the below commands to add MCPServers to Claude Code CLI.
 
 ## Tavily Search
 `claude mcp add -t http tavily-search https://mcp.tavily.com/mcp/?tavilyApiKey=` (Add your API Key to the end of the string)
+
+## Ref.Tools
+`claude mcp add -t http ref-tools https://api.ref.tools/mcp?apiKey=`
