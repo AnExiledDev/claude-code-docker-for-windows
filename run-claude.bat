@@ -15,6 +15,7 @@ ln -sf /app/.claude ~/.claude ^&^& ^
 ln -sf /app/.claude/root/.claude.json ~/.claude.json ^&^& ^
 ln -sf /app/.claude/root/.claude.json.backup ~/.claude.json.backup ^&^& ^
 echo 'alias claude=\"claude --model sonnet --dangerously-skip-permissions \"' ^>^> ~/.bashrc ^&^& ^
+claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena-mcp-server --context ide-assistant --project $(pwd) ^&^& ^
 exec bash
 
 REM -- Check if docker is available
@@ -37,7 +38,8 @@ if errorlevel 1 (
 
 REM -- Run the container with volume mount
 docker run --rm -it ^
-    -v "%CD%:/app" ^
+    --mount type=bind,source="%cd%",target=/app ^
+    -w /app ^
     -e "CLAUDE_CONFIG_DIR=.claude" ^
     %ImageName% bash -c "%CONTAINER_COMMAND%"
 
