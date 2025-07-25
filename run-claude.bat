@@ -7,12 +7,14 @@ set "CurrentDir=%cd%"
 
 REM -- Container commands to sync and persist Claude CLI configuration
 set CONTAINER_COMMAND=^
+mkdir -p /app ^&^& ^
+chown claude:claude /app ^&^& ^
 mkdir -p /app/.claude ^&^& ^
 chmod 755 /app/.claude ^&^& ^
 ln -sf /app/.claude ~/.claude ^&^& ^
 ln -sf /app/.claude/root/.claude.json ~/.claude.json ^&^& ^
 ln -sf /app/.claude/root/.claude.json.backup ~/.claude.json.backup ^&^& ^
-echo 'alias claude=\"claude --model sonnet\"' ^>^> ~/.bashrc ^&^& ^
+echo 'alias claude=\"claude --model sonnet --dangerously-skip-permissions \"' ^>^> ~/.bashrc ^&^& ^
 exec bash
 
 REM -- Check if docker is available
