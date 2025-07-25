@@ -20,17 +20,17 @@ exec bash
 REM -- Check if docker is available
 where docker >nul 2>&1
 if errorlevel 1 (
-    echo ❌ Docker is not installed or not in PATH.
+    echo ERROR: Docker is not installed or not in PATH.
     exit /b 1
 )
 
 REM -- Check if image exists
 docker image inspect %ImageName% >nul 2>&1
 if errorlevel 1 (
-    echo 🐳 Docker image '%ImageName%' not found. Building it now...
+    echo INFO: Docker image '%ImageName%' not found. Building it now...
     docker build -t %ImageName% .
     if errorlevel 1 (
-        echo ❌ Failed to build Docker image.
+        echo ERROR: Failed to build Docker image.
         exit /b 1
     )
 )
