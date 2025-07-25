@@ -12,10 +12,8 @@ chown claude:claude /app ^&^& ^
 mkdir -p /app/.claude ^&^& ^
 chmod 755 /app/.claude ^&^& ^
 ln -sf /app/.claude ~/.claude ^&^& ^
-ln -sf /app/.claude/root/.claude.json ~/.claude.json ^&^& ^
-ln -sf /app/.claude/root/.claude.json.backup ~/.claude.json.backup ^&^& ^
+ln -sf /app/.serena ~/.serena ^&^& ^
 echo 'alias claude=\"claude --model sonnet --dangerously-skip-permissions \"' ^>^> ~/.bashrc ^&^& ^
-claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena-mcp-server --context ide-assistant --project $(pwd) ^&^& ^
 exec bash
 
 REM -- Check if docker is available
