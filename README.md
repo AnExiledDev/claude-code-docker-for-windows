@@ -29,13 +29,29 @@ A lightweight, dependency-free way to run [Claude Code CLI](https://www.anthropi
 
 ## 🔧 Installation
 
+1. **Clone and setup**:
 ```cmd
 git clone https://github.com/AnExiledDev/claude-code-docker.git
 cd claude-code-docker
+```
+
+2. **Configure API keys** (optional, for enhanced MCP servers):
+```cmd
+copy .env.example .env
+# Edit .env file and add your API keys for Tavily Search and Ref.Tools
+```
+
+3. **Build the Docker image**:
+```cmd
+build-claude.bat
+```
+
+4. **Install globally** (optional):
+```cmd
 install.bat
 ```
 
-This will:
+The install script will:
 - Install `run-claude.bat` to your local programs directory
 - Create a launcher in WindowsApps for global access
 - Set up Git Bash compatibility (if available)
@@ -86,26 +102,31 @@ Claude will analyze your mounted code and answer contextually.
 
 ## 🔌 MCP Server Integration
 
-This wrapper includes support for MCP (Model Context Protocol) servers. See `MCP.md` for available servers:
+This wrapper includes **automatic setup** for MCP (Model Context Protocol) servers:
 
+**Always Installed:**
 - **Serena MCP**: Advanced code analysis and refactoring
 - **Context7**: Up-to-date library documentation  
 - **DeepWiki**: GitHub repository documentation
 - **Playwright**: Browser automation
-- **Tavily Search**: Web search capabilities
-- **Ref.Tools**: Documentation search
 
-> **⚠️ Current Limitation**: MCP server commands from `MCP.md` must be run inside the container **once per new project directory**. Each time you use `run-claude` in a different directory, you'll need to re-run the MCP setup commands. This will be automated in a future update.
+**API Key Required** (configured via `.env` file):
+- **Tavily Search**: Web search capabilities (requires `TAVILY_API_KEY`)
+- **Ref.Tools**: Documentation search (requires `REF_TOOLS_API_KEY`)
+
+> **✅ Automatic Setup**: MCP servers are automatically installed on first run. API-key dependent servers (Tavily Search, Ref.Tools) are only installed if the corresponding API keys are provided in the `.env` file during the Docker build process.
 
 ---
 
 ## 🔁 Rebuilding the Docker image
 
-If you need to rebuild the image (e.g., after modifying the Dockerfile):
+If you need to rebuild the image (e.g., after updating API keys or modifying the Dockerfile):
 
 ```cmd
-docker build -t claude-cli .
+build-claude.bat
 ```
+
+This will automatically rebuild the image with your current `.env` configuration.
 
 ---
 
@@ -113,10 +134,15 @@ docker build -t claude-cli .
 
 ```
 claude-code-docker/
+├── .env.example       # Example environment file for API keys
+├── .dockerignore      # Docker ignore patterns
+├── .gitignore         # Git ignore patterns
+├── build-claude.bat   # Docker image builder with API key integration
 ├── Dockerfile         # Node.js environment with Claude CLI and Python support
+├── entrypoint.sh      # Container startup script with MCP auto-setup
 ├── install.bat        # Windows installer script
 ├── run-claude.bat     # Main Windows script that launches Claude CLI container
-├── MCP.md            # MCP server installation commands
+├── MCP.md            # MCP server installation reference
 └── README.md
 ```
 

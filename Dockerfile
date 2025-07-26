@@ -25,14 +25,17 @@ RUN apt-get update && apt-get install -y \
 RUN groupadd -g 1001 claude && \
     useradd -m -s /bin/bash -u 1001 -g claude claude
 
-# Set working directory in claude's home
-WORKDIR /home/claude/app
+# Set working directory
+WORKDIR /app
 
 RUN npm install -g @anthropic-ai/claude-code@latest
 RUN claude update
 
 # Fix permissions (especially needed for mounted volumes and copied files)
 RUN chown -R claude:claude /home/claude
+
+# Ensure /app directory has correct permissions
+RUN mkdir -p /app && chown claude:claude /app
 
 # Switch to claude user by default
 USER claude
@@ -42,3 +45,14 @@ RUN pipx install uv
 
 # Set default shell (optional but helps on bash-based entry)
 ENV SHELL=/bin/bash
+
+# Build arguments for API keys from .env file
+ARG TAVILY_API_KEY
+ARG REF_TOOLS_API_KEY
+
+
+# Environment variables for API keys (from build args)
+ENV TAVILY_API_KEY=$TAVILY_API_KEY
+ENV REF_TOOLS_API_KEY=$REF_TOOLS_API_KEY
+
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
