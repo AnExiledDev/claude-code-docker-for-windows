@@ -33,7 +33,7 @@ if errorlevel 1 (
 REM -- Force rebuild to ensure fresh image with correct API keys
 echo INFO: Removing existing image and rebuilding with API keys...
 docker rmi %ImageName% >nul 2>&1
-docker build -t %ImageName% --build-arg TAVILY_API_KEY=!TAVILY_API_KEY! --build-arg REF_TOOLS_API_KEY=!REF_TOOLS_API_KEY! .
+docker build --no-cache -t %ImageName% --build-arg TAVILY_API_KEY=!TAVILY_API_KEY! --build-arg REF_TOOLS_API_KEY=!REF_TOOLS_API_KEY! .
 if errorlevel 1 (
     echo ERROR: Failed to build Docker image.
     exit /b 1
