@@ -1,0 +1,16 @@
+{
+	"recommendations": [
+		"ms-python.python",
+		"ms-python.black-formatter",
+		"ms-python.isort",
+		"ms-vscode.vscode-typescript-next",
+		"bradlc.vscode-tailwindcss",
+		"esbenp.prettier-vscode",
+		"ms-vscode.vscode-json",
+		"redhat.vscode-yaml",
+		"ms-vscode.remote-containers",
+		"github.copilot",
+		"github.copilot-chat",
+		"ms-vscode.vscode-docker"
+	]
+}

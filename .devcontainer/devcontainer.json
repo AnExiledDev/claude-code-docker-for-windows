@@ -1,0 +1,63 @@
+{
+	"name": "Claude Code Development Environment",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"args": {
+			"TAVILY_API_KEY": "${localEnv:TAVILY_API_KEY:}",
+			"REF_TOOLS_API_KEY": "${localEnv:REF_TOOLS_API_KEY:}"
+		}
+	},
+	"features": {
+		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-vscode.vscode-typescript-next",
+				"bradlc.vscode-tailwindcss",
+				"esbenp.prettier-vscode",
+				"ms-vscode.vscode-json",
+				"redhat.vscode-yaml",
+				"ms-vscode.remote-containers",
+				"github.copilot",
+				"github.copilot-chat"
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "/bin/bash",
+						"args": [
+							"-l"
+						]
+					}
+				},
+				"python.defaultInterpreterPath": "/home/claude/.local/bin/python",
+				"python.formatting.provider": "black",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.organizeImports": true
+				}
+			}
+		}
+	},
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
+		" source=${localWorkspaceFolder}/.devcontainer/.claude,target=/home/claude/.claude,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder}/.devcontainer/.serena,target=/home/claude/.serena,type=bind,consistency=cached"
+	],
+	"containerEnv": {
+		"TAVILY_API_KEY": "${localEnv:TAVILY_API_KEY:}",
+		"REF_TOOLS_API_KEY": "${localEnv:REF_TOOLS_API_KEY:}"
+	},
+	"remoteUser": "claude",
+	"workspaceFolder": "/app",
+	"initializeCommand": "mkdir -p ${localWorkspaceFolder}/.devcontainer/.claude ${localWorkspaceFolder}/.devcontainer/.serena",
+	"postCreateCommand": "/app/devcontainer-setup.sh && echo 'Basic container setup complete'",
+	"postStartCommand": "/app/setup-dev-environment.sh && echo 'Dev container ready! Run: claude login (if not already logged in)'",
+	"forwardPorts": [],
+	"shutdownAction": "stopContainer"
+}

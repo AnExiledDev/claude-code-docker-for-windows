@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# Create directories and set permissions
-mkdir -p /app/.claude
-mkdir -p /app/.serena
-chmod 755 /app/.claude
+# Create subdirectories for config storage
+mkdir -p /app/.claude-data
+mkdir -p /app/.serena-data
+chmod 755 /app/.claude-data /app/.serena-data
 
-# Create symlinks for persistent configuration
+# Create symlinks in the mounted directory (visible to user) pointing to data subdirectories
+ln -sf .claude-data /app/.claude
+ln -sf .serena-data /app/.serena
+
+# Create symlinks in home directory for CLI access
 ln -sf /app/.claude ~/.claude
 ln -sf /app/.serena ~/.serena
 

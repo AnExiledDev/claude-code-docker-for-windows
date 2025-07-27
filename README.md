@@ -8,7 +8,8 @@ A lightweight, dependency-free way to run [Claude Code CLI](https://www.anthropi
 
 ## 🚀 Features
 
-- Run Claude CLI in **any project folder** using `run-claude`
+- **VS Code Dev Container Integration**: Full IDE experience with containerized development environment
+- **Standard Docker Support**: Run Claude CLI in any project folder using `run-claude`
 - Works on **Windows 10/11** with Docker Desktop or WSL2
 - CLI login and API session are **persisted across runs** via `.claude` folder
 - Mounts current directory into the container for context-aware use
@@ -16,18 +17,54 @@ A lightweight, dependency-free way to run [Claude Code CLI](https://www.anthropi
 - Works in both **Command Prompt/PowerShell** and **Git Bash**
 - Includes MCP server configuration for extended functionality
 - Pre-configured `claude` command with optimized defaults
+- **Developer-friendly tools**: ZSH with Oh My Zsh, fzf, vim, and more
 
 ---
 
 ## 🧱 Prerequisites
 
+**For Standard Docker Usage:**
 - [Docker Desktop for Windows](https://docs.docker.com/desktop/windows/install/) installed and running
 - Windows 10/11 with WSL2 enabled (recommended)
 - Git Bash (optional, for bash compatibility)
 
+**For VS Code Dev Container (Recommended):**
+- [VS Code](https://code.visualstudio.com/) with [Remote-Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Docker Desktop](https://docs.docker.com/desktop/) installed and running
+
 ---
 
 ## 🔧 Installation
+
+### Option 1: VS Code Dev Container (Recommended)
+
+1. **Clone the repository**:
+```cmd
+git clone https://github.com/AnExiledDev/claude-code-docker.git
+cd claude-code-docker
+```
+
+2. **Configure API keys** (optional):
+```cmd
+copy .env.example .env
+# Edit .env file and add your API keys for Tavily Search and Ref.Tools
+```
+
+3. **Open in VS Code**:
+```cmd
+code .
+```
+
+4. **Reopen in Container**:
+   - VS Code will prompt to "Reopen in Container"
+   - Or use Command Palette: `Remote-Containers: Reopen in Container`
+
+5. **First-time setup** (in VS Code terminal):
+```bash
+claude login
+```
+
+### Option 2: Standard Docker Usage
 
 1. **Clone and setup**:
 ```cmd

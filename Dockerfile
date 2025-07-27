@@ -2,7 +2,7 @@ FROM node:20
 
 ENV PATH="/home/claude/.local/bin:$PATH"
 
-# Install Python 3.13 from source (since it's not in Debian repos)
+# Install Python and development tools
 RUN apt-get update && apt-get install -y \
     wget \
     build-essential \
@@ -19,11 +19,20 @@ RUN apt-get update && apt-get install -y \
     liblzma-dev \
     python3.11 \
     python3-pip \
-    pipx
+    pipx \
+    git \
+    curl \
+    vim \
+    nano \
+    zsh \
+    fzf \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
 
-# Add user and group "claude"
+# Add user and group "claude" with sudo access
 RUN groupadd -g 1001 claude && \
-    useradd -m -s /bin/bash -u 1001 -g claude claude
+    useradd -m -s /bin/bash -u 1001 -g claude claude && \
+    echo "claude ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Set working directory
 WORKDIR /app
@@ -55,4 +64,14 @@ ARG REF_TOOLS_API_KEY
 ENV TAVILY_API_KEY=$TAVILY_API_KEY
 ENV REF_TOOLS_API_KEY=$REF_TOOLS_API_KEY
 
+# Configure ZSH for better development experience
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+USER claude
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+
+# Switch back to root for final setup
+USER root
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
+
+# Set default command for dev container
+CMD ["/bin/bash"]
