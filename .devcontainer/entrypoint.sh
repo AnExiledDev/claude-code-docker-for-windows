@@ -1,20 +1,6 @@
 #!/bin/bash
 
-# Create subdirectories for config storage
-mkdir -p /app/.claude-data
-mkdir -p /app/.serena-data
-chmod 755 /app/.claude-data /app/.serena-data
-
-# Create symlinks in the mounted directory (visible to user) pointing to data subdirectories
-ln -sf .claude-data /app/.claude
-ln -sf .serena-data /app/.serena
-
-# Create symlinks in home directory for CLI access
-ln -sf /app/.claude ~/.claude
-ln -sf /app/.serena ~/.serena
-
-# Add claude alias to bashrc
-echo 'alias claude="claude --model sonnet --dangerously-skip-permissions"' >> ~/.bashrc
+source .devcontainer/.env
 
 # Install MCP servers if not already configured
 MCP_OUTPUT=$(claude mcp list 2>/dev/null || echo "No MCP servers configured")
@@ -22,7 +8,7 @@ MCP_OUTPUT=$(claude mcp list 2>/dev/null || echo "No MCP servers configured")
 if echo "$MCP_OUTPUT" | grep -q "No MCP servers configured"; then
   echo "Installing MCP servers..."
   
-  claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena-mcp-server --context ide-assistant --project /app
+  claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena-mcp-server --context ide-assistant --project /workspace
   claude mcp add -t http context7 https://mcp.context7.com/mcp
   claude mcp add -t http deepwiki https://mcp.deepwiki.com/mcp
   claude mcp add playwright npx @playwright/mcp@latest
@@ -45,5 +31,4 @@ if [ ! -z "$REF_TOOLS_API_KEY" ]; then
   fi
 fi
 
-# Start bash
-exec bash
+echo "Entrypoint setup complete."

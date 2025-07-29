@@ -1,4 +1,4 @@
-.claude/
 !.claude/agents
+.claude/
 .serena/
 .env
