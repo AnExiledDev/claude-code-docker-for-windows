@@ -17,13 +17,16 @@ A complete VS Code development environment for [Claude Code CLI](https://www.ant
 - **MCP server integration** for extended functionality
 - **Pre-configured `claude` command** with optimized defaults
 - **API key support** for Tavily Search and Ref.Tools
+- **🔍 Full Observability Stack** - Built-in monitoring with Grafana, Prometheus, and OpenTelemetry
+- **📊 Usage Analytics** - Track Claude Code performance, costs, and productivity metrics
+- **🚨 Real-time Monitoring** - Live dashboards for development activity and tool usage
 
 ---
 
 ## 🧱 Prerequisites
 
 - [Visual Studio Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-- [Docker Desktop](https://docs.docker.com/desktop/) installed and running
+- [Docker Desktop](https://docs.docker.com/desktop/) installed and running (8GB+ RAM recommended for observability stack)
 - Git (for cloning the repository)
 
 **For VS Code Dev Container (Recommended):**
@@ -85,7 +88,14 @@ claude login
 
 3. **Your workspace** is mounted at `/workspace` with full read/write access
 
+4. **Access observability dashboards**:
+   - **Grafana**: http://localhost:3000 (admin/admin) - Main analytics dashboard
+   - **Prometheus**: http://localhost:9090 - Metrics and queries
+   - **OTLP Endpoints**: localhost:4317 (gRPC), localhost:4318 (HTTP)
+
 > **📁 Configuration Persistence**: The `.claude` and `.serena` folders are created in your project directory, allowing project-specific configurations that persist across container restarts.
+
+> **📊 Observability**: Full telemetry collection is automatically enabled, providing real-time insights into Claude Code usage, performance metrics, cost tracking, and productivity analytics.
 
 ---
 
@@ -125,6 +135,13 @@ This dev container includes **automatic setup** for MCP (Model Context Protocol)
 
 - **Tavily Search**: Web search capabilities (requires `TAVILY_API_KEY`)
 - **Ref.Tools**: Documentation search (requires `REF_TOOLS_API_KEY`)
+
+**Observability Stack** (automatically configured):
+
+- **OpenTelemetry Collector**: Metrics and logs collection
+- **Prometheus**: Time-series metrics storage
+- **Grafana**: Analytics dashboards and visualization
+- **Loki**: Log aggregation and analysis
 
 > **✅ Automatic Setup**: MCP servers are automatically installed on first run. API-key dependent servers (Tavily Search, Ref.Tools) are only installed if the corresponding API keys are provided in the `.env` file during the Docker build process.
 

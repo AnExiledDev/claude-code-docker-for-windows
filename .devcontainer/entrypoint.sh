@@ -2,6 +2,26 @@
 
 source .devcontainer/.env
 
+# Wait for observability stack to be ready
+echo "Waiting for observability stack to be ready..."
+timeout=120
+while ! wget -q --spider http://otel-collector:8889/metrics 2>/dev/null; do
+    sleep 2
+    timeout=$((timeout-2))
+    if [ $timeout -le 0 ]; then
+        echo "Warning: Observability stack not ready after 2 minutes, continuing without it"
+        break
+    fi
+done
+
+if wget -q --spider http://otel-collector:8889/metrics 2>/dev/null; then
+    echo "✅ Observability stack is ready"
+    echo "📊 Grafana Dashboard: http://localhost:3000 (admin/admin)"
+    echo "🔍 Prometheus: http://localhost:9090"
+else
+    echo "⚠️  Observability stack not accessible, Claude Code will work without telemetry"
+fi
+
 # Install MCP servers if not already configured
 MCP_OUTPUT=$(claude mcp list 2>/dev/null || echo "No MCP servers configured")
 

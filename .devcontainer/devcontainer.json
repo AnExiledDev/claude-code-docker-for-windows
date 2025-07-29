@@ -1,14 +1,7 @@
 {
-  "name": "Claude Code Sandbox",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      "TZ": "${localEnv:TZ:America/Los_Angeles}",
-      "TAVILY_API_KEY": "${localEnv:TAVILY_API_KEY}",
-      "REF_TOOLS_API_KEY": "${localEnv:REF_TOOLS_API_KEY}"
-    }
-  },
-  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+  "name": "Claude Code Sandbox with Observability",
+  "dockerComposeFile": "docker-compose.devcontainer.yml",
+  "service": "claude-code-dev",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -36,19 +29,31 @@
     }
   },
   "remoteUser": "node",
-  "mounts": [
-    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
-    "source=${localWorkspaceFolder}/.claude,target=/home/node/.claude,type=bind",
-    "source=${localWorkspaceFolder}/.serena,target=/home/node/.serena,type=bind"
-  ],
-  "remoteEnv": {
-    "NODE_OPTIONS": "--max-old-space-size=4096",
-    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
-    "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
-    "TAVILY_API_KEY": "${localEnv:TAVILY_API_KEY}",
-    "REF_TOOLS_API_KEY": "${localEnv:REF_TOOLS_API_KEY}"
-  },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "sudo /usr/local/bin/perms.sh && /usr/local/bin/entrypoint.sh"
+  "forwardPorts": [3000, 9090, 4317, 4318, 3100],
+  "portsAttributes": {
+    "3000": {
+      "label": "Grafana Dashboard",
+      "onAutoForward": "notify"
+    },
+    "9090": {
+      "label": "Prometheus",
+      "onAutoForward": "ignore"
+    },
+    "4317": {
+      "label": "OTLP gRPC",
+      "onAutoForward": "ignore"
+    },
+    "4318": {
+      "label": "OTLP HTTP", 
+      "onAutoForward": "ignore"
+    },
+    "3100": {
+      "label": "Loki",
+      "onAutoForward": "ignore"
+    }
+  },
+  "postCreateCommand": "sudo /usr/local/bin/perms.sh && /usr/local/bin/entrypoint.sh",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false
 }
